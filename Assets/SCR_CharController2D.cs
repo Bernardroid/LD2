@@ -7,20 +7,33 @@ public class SCR_CharController2D : MonoBehaviour {
     SpriteRenderer sprRenderer;
     public float maxSpeed = 10f;
     public float jumpForce = 5f;
-    bool b_right = true;
+    public static bool b_right = true;
     public bool b_isGrounded;
+    //public GameObject groundCheck;
+
+    public Transform bulletSpawnR;
+    public Transform bulletSpawnL;
     Rigidbody2D myRB;
     Animator myAnim;
+
+    public GameObject bulletNormal;
+    public GameObject bulletFire;
+
+    GameObject currentBullet;
+
+    public LayerMask ground_layer;
 
 	void Start () {
 
         myAnim = GetComponent<Animator>();
         sprRenderer = GetComponent<SpriteRenderer>();
         myRB = GetComponent<Rigidbody2D>();
+        currentBullet = bulletNormal;
 	}
 	
 	void FixedUpdate ()
     {
+        IsGrounded();
         float move = Input.GetAxisRaw("Horizontal");
         myRB.velocity = new Vector2(move * maxSpeed, myRB.velocity.y);
 
@@ -29,35 +42,62 @@ public class SCR_CharController2D : MonoBehaviour {
         else if (move < 0 && b_right)
             FlipSprite();
 
-        if((Input.GetButtonDown("Jump") || Input.GetKeyDown(KeyCode.Space)) && b_isGrounded)
+
+        if (myRB.velocity.y <= 0 && !b_isGrounded)
         {
-            //myRB.gravityScale = 1;
-            myRB.velocity = new Vector2(0, jumpForce);
-            if (myRB.velocity.y < 0)
-                myRB.gravityScale = 4;
+            Debug.Log("Falling faster");
+            myRB.gravityScale += 0.2f;
         }
+        else
+        {
+            myRB.gravityScale = 1;
+        }
+
+       
 
         myAnim.SetInteger("Speed", Mathf.Abs((int)move));
 
         Debug.Log("GROUNDED: " + b_isGrounded);
+
+        if(Input.GetKey(KeyCode.LeftShift) && Input.GetKeyDown(KeyCode.U))
+        {
+            UnlockHighJump();
+        }
+
+        
 	}
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void Update()
     {
-        if(collision.transform.CompareTag("Floor"))
+        if (Input.GetMouseButtonDown(0))
         {
-            //Debug.Log("GROUNDED");
-            b_isGrounded = true;
+            if (b_right)
+                Instantiate(currentBullet, bulletSpawnR.position, Quaternion.identity);
+
+            else
+                Instantiate(currentBullet, bulletSpawnL.position, Quaternion.identity);
+        }
+
+        if ((Input.GetButtonDown("Jump") || Input.GetKeyDown(KeyCode.Space)) && b_isGrounded)
+        {
+            //myRB.gravityScale = 1;
+            myRB.velocity = new Vector2(0, jumpForce);
         }
     }
 
-    private void OnTriggerExit2D(Collider2D collision)
+    public void UnlockHighJump()
     {
-        if (collision.transform.CompareTag("Floor"))
-        {
-            //Debug.Log("NOT GROUNDED");
-            b_isGrounded = false;
-        }
+        jumpForce = 7.5f;
+    }
+
+    public void UnlockFireBullets()
+    {
+        currentBullet = bulletFire;
+    }
+
+    private void IsGrounded()
+    {
+        b_isGrounded = Physics2D.OverlapCircle(new Vector2(transform.position.x + 0.08f, transform.position.y - 0.22f), 0.35f, ground_layer);
     }
 
     void FlipSprite()

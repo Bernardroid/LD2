@@ -23,7 +23,7 @@ GameObject:
   - component: {fileID: 23515013423145320}
   - component: {fileID: 61271818519563042}
   - component: {fileID: 61484026200815106}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: FloorPiece
   m_TagString: Floor
   m_Icon: {fileID: 0}
@@ -37,8 +37,8 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1945754377168718}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -24.001, y: 7.52, z: 20.554688}
-  m_LocalScale: {x: 20.937551, y: 0.5103493, z: 1}
+  m_LocalPosition: {x: -82.755, y: 26.79, z: 20}
+  m_LocalScale: {x: 2.3433464, y: 0.42103815, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -121,7 +121,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0, y: 0.2739447}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -132,5 +132,5 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1, y: 1.42}
+  m_Size: {x: 1, y: 0.8721104}
   m_EdgeRadius: 0
